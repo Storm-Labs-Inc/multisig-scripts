@@ -1,3 +1,6 @@
 [submodule "lib/forge-std"]
 	path = lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "lib/cove-contracts-boosties"]
+	path = lib/cove-contracts-boosties
+	url = https://github.com/Storm-Labs-Inc/cove-contracts-boosties
