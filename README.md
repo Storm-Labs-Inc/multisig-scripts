@@ -1,66 +1,32 @@
-## Foundry
-
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
-
-Foundry consists of:
-
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
+## Cove's multisig scripts repo
 
 ## Usage
 
-### Build
+### Set .env File 
+   - Set `WALLET_TYPE` to `local`, `ledger`, `trezor`, or `account` depending on your wallet
+   - If `WALLET_TYPE` is `local`:
+     - Set `PRIVATE_KEY` to your private key
+   - If `WALLET_TYPE` is `ledger` or `trezor`:
+     - Set `MNEMONIC_INDEX` to the index of the mnemonic
+   - If `WALLET_TYPE` is `account`:
+     - Set `ACCOUNT_NAME` to the name of the account saved in the forge cast wallet
+
+### Install
 
 ```shell
-$ forge build
+$ forge install
 ```
 
-### Test
+### Run scripts
 
+* Multisig scripts
 ```shell
-$ forge test
+$ forge script --fork-url <your_fork_url> script/ops/GnosisSafeScript.s.sol -s "run(bool)" false # simulate only
+$ forge script --fork-url <your_fork_url> script/ops/GnosisSafeScript.s.sol -s "run(bool)" true # queue up the multisig transaction
 ```
 
-### Format
-
+* Deployer scripts
 ```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+$ forge script --fork-url <your_fork_url> script/deployer/DeployerScript.s.sol # simulate only
+$ forge script --fork-url <your_fork_url> script/deployer/DeployerScript.s.sol --broadcast --account deployer # execute and broadcast tx
 ```
