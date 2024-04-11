@@ -14,19 +14,27 @@
 ### Install
 
 ```shell
-$ forge install
+forge install
 ```
 
 ### Run scripts
 
 * Multisig scripts
 ```shell
-$ forge script --fork-url <your_fork_url> script/ops/GnosisSafeScript.s.sol -s "run(bool)" false # simulate only
-$ forge script --fork-url <your_fork_url> script/ops/GnosisSafeScript.s.sol -s "run(bool)" true # queue up the multisig transaction
+# simulate only
+forge script --fork-url <your_fork_url> script/ops/GnosisSafeScript.s.sol -s "run(bool)" false
+```
+```shell
+# queue up the multisig transaction
+forge script --fork-url <your_fork_url> script/ops/GnosisSafeScript.s.sol -s "run(bool)" true 
 ```
 
 * Deployer scripts
 ```shell
-$ forge script --fork-url <your_fork_url> script/deployer/DeployerScript.s.sol # simulate only
-$ forge script --fork-url <your_fork_url> script/deployer/DeployerScript.s.sol --broadcast --account deployer # execute and broadcast tx
+# simulate only
+forge script --fork-url <your_fork_url> script/deployer/DeployerScript.s.sol
+```
+```shell
+# execute and broadcast tx
+forge script --fork-url <your_fork_url> script/deployer/DeployerScript.s.sol --broadcast --account deployer 
 ```
