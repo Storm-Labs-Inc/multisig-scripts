@@ -54,7 +54,10 @@ contract Script is OpsMultisigScript {
             coveYfiRewardsGaugeRewardForwarder, 0, abi.encodeCall(RewardForwarder.forwardRewardToken, (coveToken))
         );
         require(CoveToken(coveToken).balanceOf(coveYfiRewardsGauge) == uint256(3_500_000 ether) / 3, "Forward failed");
-        require(ERC20RewardsGauge(coveYfiRewardsGauge).getRewardData(address(coveToken)).rate > 0, "rate not set");
+        require(
+            ERC20RewardsGauge(coveYfiRewardsGauge).getRewardData(address(coveToken)).rate == 1_929_012_345_679_012_345,
+            "rate not set"
+        );
         for (uint256 j = 0; j < info.length; j++) {
             address autoCompoundingGaugeRewardForwarder =
                 ERC20RewardsGauge(info[j].autoCompoundingGauge).getRewardData(address(coveToken)).distributor;
@@ -70,7 +73,8 @@ contract Script is OpsMultisigScript {
                 autoCompoundingGaugeRewardForwarder, 0, abi.encodeCall(RewardForwarder.forwardRewardToken, (coveToken))
             );
             require(
-                ERC20RewardsGauge(info[j].autoCompoundingGauge).getRewardData(address(coveToken)).rate > 0,
+                ERC20RewardsGauge(info[j].autoCompoundingGauge).getRewardData(address(coveToken)).rate
+                    == 110_229_276_895_943_562,
                 "rate not set"
             );
         }
