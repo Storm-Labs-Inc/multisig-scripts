@@ -19,6 +19,9 @@ contract Script is OpsMultisigScript {
         CoveYearnGaugeFactory factory = CoveYearnGaugeFactory(deployer.getAddress("CoveYearnGaugeFactory"));
         CoveYearnGaugeFactory.GaugeInfo[] memory info = factory.getAllGaugeInfo(5, 0);
 
+        // Skip ahead to to end of current reward period
+        vm.warp((ERC20RewardsGauge(coveYfiRewardsGauge).getRewardData(coveToken)).periodFinish + 1);
+
         // queueing up the rewards for epoch 1, week 1
         // 3.5M / 3 COVE to CoveYFIRewardsGauge
         // (1M / 5) / 3 COVE to each auto-compoiunding gauge
