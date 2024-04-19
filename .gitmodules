@@ -6,4 +6,4 @@
 	url = https://github.com/Storm-Labs-Inc/cove-contracts-boosties
 [submodule "lib/forge-safe"]
 	path = lib/forge-safe
-	url = https://github.com/Storm-Labs-Inc/forge-safe
+	url = https://github.com/Storm-LabsInc/forge-safe
