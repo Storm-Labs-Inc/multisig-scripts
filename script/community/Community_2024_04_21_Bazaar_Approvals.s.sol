@@ -23,13 +23,6 @@ contract Script is CommunityMultisigScript {
         // Check return value
         require(abi.decode(ret, (bool)), "failed to approve");
 
-        ret = addToBatch(
-            coveToken, 0, abi.encodeCall(CoveToken.addAllowedSender, (_BAZAAR_BATCH_AUCTION_FACTORY_ADDRESS))
-        );
-        require(
-            CoveToken(coveToken).allowedSender(_BAZAAR_BATCH_AUCTION_FACTORY_ADDRESS) == true, "failed to allow sender"
-        );
-
         // Execute batch
         executeBatch(shouldSend);
     }
