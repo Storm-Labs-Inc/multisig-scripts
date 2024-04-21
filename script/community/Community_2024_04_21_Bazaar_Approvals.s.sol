@@ -12,6 +12,8 @@ contract Script is CommunityMultisigScript {
     address private constant _COVE_TOKEN_ADDRESS = address(0x32fb7D6E0cBEb9433772689aA4647828Cc7cbBA8);
 
     function run(bool shouldSend) public override {
+        super.run(shouldSend);
+
         // Start batch
         bytes memory ret = addToBatch(
             _COVE_TOKEN_ADDRESS,
