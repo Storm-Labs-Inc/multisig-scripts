@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.18;
 
-import {BatchScript} from "forge-safe/BatchScript.sol";
-import {Constants} from "cove-contracts-boosties/test/utils/Constants.sol";
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { BatchScript } from "forge-safe/BatchScript.sol";
+import { Constants } from "cove-contracts-boosties/test/utils/Constants.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 abstract contract CommunityMultisigScript is BatchScript, Constants {
     function run(bool) public virtual isBatch(MAINNET_COVE_COMMUNITY_MULTISIG) {
