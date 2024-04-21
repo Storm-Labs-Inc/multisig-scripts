@@ -29,8 +29,8 @@ contract Script is CommunityMultisigScript {
     // https://etherscan.io/address/0x47612eabFbE65329AeD1ab1BF3FCbAE493aEf460
     address private constant _BAZAAR_BATCH_AUCTION_FACTORY_ADDRESS = address(0x47612eabFbE65329AeD1ab1BF3FCbAE493aEf460);
     address private constant _WETH = address(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2);
-    uint256 private constant _START_TIME = 1_713_758_400;
-    uint256 private constant _END_TIME = 1_714_017_600;
+    uint256 private constant _START_TIME = 1_713_801_600; // April 22nd, 2024 16:00 UTC
+    uint256 private constant _END_TIME = 1_714_060_800; // April 25th, 2024 16:00 UTC
 
     function run(bool shouldSend) public override {
         super.run(shouldSend);
