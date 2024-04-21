@@ -22,6 +22,7 @@ interface BazaarBatchAuctionFactory {
 interface BazaarAuction {
     function subscribe(address subscriber, uint256 amount) external payable;
     function claimProjectToken() external;
+    function claimAuctioneerTokens() external;
 }
 
 contract Script is CommunityMultisigScript {
@@ -78,6 +79,11 @@ contract Script is CommunityMultisigScript {
         // Claim project token
         auction.claimProjectToken();
         require(IERC20(coveToken).balanceOf(address(0xbeef)) > 0, "failed to claim project token");
+        vm.stopPrank();
+        vm.prank(MAINNET_COVE_COMMUNITY_MULTISIG);
+        auction.claimAuctioneerTokens();
+        // Check if auctioneer tokens are claimed
+        require(MAINNET_COVE_COMMUNITY_MULTISIG.balance > 0, "failed to claim auctioneer tokens");
 
         // Execute batch
         // executeBatch(shouldSend);
