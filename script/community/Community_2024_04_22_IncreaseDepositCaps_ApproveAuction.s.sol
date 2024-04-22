@@ -1,36 +1,12 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.18;
 
-import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { CoveToken } from "cove-contracts-boosties/src/governance/CoveToken.sol";
 import { CommunityMultisigScript } from "./CommunityMultisigScript.s.sol";
-import { console2 as console } from "forge-std/console2.sol";
 import { TimelockController } from "@openzeppelin/contracts/governance/TimelockController.sol";
 import { YearnStakingDelegate } from "cove-contracts-boosties/src/YearnStakingDelegate.sol";
 
-struct BatchAuctionUncappedConfig {
-    IERC20 projectToken; // coveToken
-    IERC20 quoteToken; // weth 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
-    uint256 projectTokenAmount; // 95_000_000 ether
-    uint256 floorQuoteAmount; // 903.66603 ether
-    uint256 startTime; // 1713758400
-    uint256 endTime; // 1714017600
-}
-
-interface BazaarBatchAuctionFactory {
-    function createAuction(BatchAuctionUncappedConfig memory cfg) external returns (BazaarAuction);
-}
-
-interface BazaarAuction {
-    function subscribe(address subscriber, uint256 amount) external payable;
-    function claimProjectToken() external;
-    function claimAuctioneerTokens() external;
-}
-
 contract Script is CommunityMultisigScript {
-    uint256 private constant _START_TIME = 1_713_801_600; // April 22nd, 2024 16:00 UTC
-    uint256 private constant _END_TIME = 1_714_060_800; // April 25th, 2024 16:00 UTC
-
     // Uses prices from 2024-04-22
     // $3246.07 per share
     uint256 public constant MAINNET_WETH_YETH_POOL_GAUGE_MAX_DEPOSIT = 30_806_471_570_663_775_570;
