@@ -197,6 +197,8 @@ contract Script is CommunityMultisigScript {
         );
 
         // ============================= QUEUE UP MSIG ================================
-        // executeBatch(shouldSend);
+        if (shouldSend) {
+            executeBatch(true);
+        }
     }
 }
