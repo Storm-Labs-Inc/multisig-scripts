@@ -22,20 +22,20 @@ contract Script is OpsMultisigScript {
         vm.warp((ERC20RewardsGauge(coveYfiRewardsGauge).getRewardData(coveToken)).periodFinish + 1);
 
         // queueing up the rewards for epoch 1, week 1
-        // 3.5M / 3 COVE to CoveYFIRewardsGauge
-        // (750K / 5) / 3 COVE to each V2 auto-compoiunding gauge
-        // (750k / 3) / 3 COVE to each V3 auto-compounding gauge
+        // 3.5M / 4 COVE to CoveYFIRewardsGauge
+        // (750K / 5) / 4 COVE to each V2 auto-compounding gauge
+        // (750k / 3) / 4 COVE to each V3 auto-compounding gauge
         uint256 balanceBefore = IERC20(coveToken).balanceOf(coveYfiRewardsGauge);
         addToBatch(
             coveToken,
             0,
-            abi.encodeCall(IERC20.transfer, (coveYfiRewardsGaugeRewardForwarder, uint256(3_500_000 ether) / 3))
+            abi.encodeCall(IERC20.transfer, (coveYfiRewardsGaugeRewardForwarder, uint256(3_500_000 ether) / 4))
         );
         addToBatch(
             coveYfiRewardsGaugeRewardForwarder, 0, abi.encodeCall(RewardForwarder.forwardRewardToken, (coveToken))
         );
         require(
-            IERC20(coveToken).balanceOf(coveYfiRewardsGauge) == balanceBefore + uint256(3_500_000 ether) / 3,
+            IERC20(coveToken).balanceOf(coveYfiRewardsGauge) == balanceBefore + uint256(3_500_000 ether) / 4,
             "coveYfiRewardsGauge forwardRewardToken failed"
         );
 
@@ -50,7 +50,7 @@ contract Script is OpsMultisigScript {
                 0,
                 abi.encodeCall(
                     IERC20.transfer,
-                    (autoCompoundingGaugeRewardForwarder, (uint256(750_000 ether) / rewardSplitAmount) / 3)
+                    (autoCompoundingGaugeRewardForwarder, (uint256(750_000 ether) / rewardSplitAmount) / 4)
                 )
             );
             addToBatch(
@@ -58,7 +58,7 @@ contract Script is OpsMultisigScript {
             );
             require(
                 IERC20(coveToken).balanceOf(info[j].autoCompoundingGauge)
-                    == balanceBefore + (uint256(750_000 ether) / rewardSplitAmount) / 3,
+                    == balanceBefore + (uint256(750_000 ether) / rewardSplitAmount) / 4,
                 "forwardRewardToken failed for v2 auto-compounding gauge"
             );
             console.log(
