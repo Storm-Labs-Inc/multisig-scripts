@@ -21,8 +21,8 @@ contract Script is CommunityMultisigScript, StdAssertions {
         uint256[] memory values = new uint256[](10);
         bytes[] memory payloads = new bytes[](10);
 
-        uint256 ethBalance = address(MAINNET_COVE_COMMUNITY_MULTISIG).balance;
-
+        uint256 ethToTransfer = 50 ether;
+        uint256 ethBalanceBefore = MAINNET_COVE_COMMUNITY_MULTISIG.balance;
         // ================================ START BATCH ===================================
         // Increase deposit caps
         targets[0] = ysd;
@@ -80,7 +80,7 @@ contract Script is CommunityMultisigScript, StdAssertions {
         );
 
         // Transfer ETH from the auction to ops multisig for coveYFI minting
-        addToBatch(MAINNET_COVE_OPS_MULTISIG, address(MAINNET_COVE_COMMUNITY_MULTISIG).balance, new bytes(0));
+        addToBatch(MAINNET_COVE_OPS_MULTISIG, ethToTransfer, new bytes(0));
 
         // ================================ TESTING ===================================
 
@@ -102,8 +102,12 @@ contract Script is CommunityMultisigScript, StdAssertions {
             "should have set deposit limit for yvDAI"
         );
 
-        assertEq(address(MAINNET_COVE_OPS_MULTISIG).balance, ethBalance, "should have transferred all eth to ops");
-        assertEq(address(MAINNET_COVE_COMMUNITY_MULTISIG).balance, 0, "should have transferred all eth to ops");
+        assertEq(MAINNET_COVE_OPS_MULTISIG.balance, ethToTransfer, "should have transferred 50 eth to ops");
+        assertEq(
+            MAINNET_COVE_COMMUNITY_MULTISIG.balance,
+            ethBalanceBefore - ethToTransfer,
+            "should have transferred 50 eth to ops"
+        );
 
         // ============================= QUEUE UP MSIG ================================
         if (shouldSend) {
