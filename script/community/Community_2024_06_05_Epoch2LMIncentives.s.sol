@@ -40,7 +40,7 @@ contract Script is CommunityMultisigScript, StdAssertions {
         );
         assertEq(opsBalanceAfter - opsBalanceBefore, totalRewards, "should have sent cove tokens to ops");
         // ============================= QUEUE UP MSIG ================================
-        if (vm.prompt("Send to Cove Community Multisig? (y/n)") == "y") {
+        if (shouldSend) {
             executeBatch(true);
         }
     }
