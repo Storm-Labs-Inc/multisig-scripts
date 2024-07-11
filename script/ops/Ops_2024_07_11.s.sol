@@ -2,7 +2,7 @@
 pragma solidity ^0.8.18;
 
 import { OpsMultisigScript } from "./OpsMultisigScript.s.sol";
-import { TokenizedStrategy } from "tokenized-strategy/src/TokenizedStrategy.sol";
+import { TokenizedStrategy } from "tokenized-strategy/TokenizedStrategy.sol";
 import { YearnGaugeStrategy } from "cove-contracts-boosties/src/strategies/YearnGaugeStrategy.sol";
 
 contract Script is OpsMultisigScript {
