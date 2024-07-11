@@ -19,6 +19,8 @@ contract Script is CommunityMultisigScript, StdAssertions {
         address stakingDelegateRewards = deployer.getAddress("StakingDelegateRewards");
         address newStrategy = deployer.getAddress("YearnGaugeStrategy-yGauge Curve COVEYFI Factory yVault");
         address timelock = deployer.getAddress("TimelockController");
+        // 100k USD deposit limit with 4529.94 USD per COVEYFI/YFI LP token
+        uint256 maxDeposit = uint256(100_000e18 * 1e18) / 4529.94e18;
         CoveToken coveToken = CoveToken(deployer.getAddress("CoveToken"));
 
         // ================================ START BATCH ===================================
@@ -28,12 +30,6 @@ contract Script is CommunityMultisigScript, StdAssertions {
             yearnStakingDelegate,
             0,
             abi.encodeCall(YearnStakingDelegate.addGaugeRewards, (MAINNET_COVEYFI_YFI_GAUGE, stakingDelegateRewards))
-        );
-        // Set gauge reward split
-        addToBatch(
-            yearnStakingDelegate,
-            0,
-            abi.encodeCall(YearnStakingDelegate.setGaugeRewardSplit, (MAINNET_COVEYFI_YFI_GAUGE, 0, 0, 100e16, 0))
         );
         // Deploy the reward gauges and the forwarders via the factory
         addToBatch(coveYearnGaugeFactory, 0, abi.encodeCall(CoveYearnGaugeFactory.deployCoveGauges, (newStrategy)));
@@ -59,9 +55,9 @@ contract Script is CommunityMultisigScript, StdAssertions {
             abi.encodeCall(AccessControl.grantRole, (MANAGER_ROLE, MAINNET_DEFENDER_RELAYER))
         );
 
-        address[] memory targets = new address[](7);
-        uint256[] memory values = new uint256[](7);
-        bytes[] memory payloads = new bytes[](7);
+        address[] memory targets = new address[](8);
+        uint256[] memory values = new uint256[](8);
+        bytes[] memory payloads = new bytes[](8);
 
         // Grant depositor role to the strategy and non-auto compounding gauge
         targets[0] = yearnStakingDelegate;
@@ -70,9 +66,7 @@ contract Script is CommunityMultisigScript, StdAssertions {
         payloads[1] = abi.encodeCall(AccessControl.grantRole, (DEPOSITOR_ROLE, info.nonAutoCompoundingGauge));
         // Set deposit limit for the gauge
         targets[2] = yearnStakingDelegate;
-        payloads[2] = abi.encodeCall(
-            YearnStakingDelegate.setDepositLimit, (MAINNET_COVEYFI_YFI_GAUGE, uint256(100_000e18 * 1e18) / 4529.94e18)
-        );
+        payloads[2] = abi.encodeCall(YearnStakingDelegate.setDepositLimit, (MAINNET_COVEYFI_YFI_GAUGE, maxDeposit));
         require(coveToken.allowedSender(info.autoCompoundingGauge) == false, "Already allowed sender");
         require(coveToken.allowedSender(info.nonAutoCompoundingGauge) == false, "Already allowed sender");
         require(coveToken.allowedSender(autoCompoundingGaugeRewardForwarder) == false, "Already allowed sender");
@@ -86,6 +80,10 @@ contract Script is CommunityMultisigScript, StdAssertions {
         payloads[5] = abi.encodeCall(coveToken.addAllowedSender, (autoCompoundingGaugeRewardForwarder));
         targets[6] = address(coveToken);
         payloads[6] = abi.encodeCall(coveToken.addAllowedSender, (nonComoundingGaugeRewardForwarder));
+        // Set the gauge reward split for covyfi yfi gauge
+        targets[7] = address(yearnStakingDelegate);
+        payloads[7] =
+            abi.encodeCall(YearnStakingDelegate.setGaugeRewardSplit, (MAINNET_COVEYFI_YFI_GAUGE, 0, 0, 1e18, 0));
 
         // Queue up the timelock transaction
         addToBatch(
