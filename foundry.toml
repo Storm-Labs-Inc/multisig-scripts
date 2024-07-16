@@ -13,6 +13,7 @@ remappings = [
     'forge-safe/=lib/forge-safe/src',
     '@openzeppelin/=lib/cove-contracts-boosties/lib/openzeppelin-contracts/',
     'script/=script',
+    'tokenized-strategy/=lib/cove-contracts-boosties/lib/tokenized-strategy/src',
 ]
 
 fs_permissions = [
