@@ -82,8 +82,9 @@ contract Script is CommunityMultisigScript, StdAssertions {
         payloads[6] = abi.encodeCall(coveToken.addAllowedSender, (nonComoundingGaugeRewardForwarder));
         // Set the gauge reward split for covyfi yfi gauge
         targets[7] = address(yearnStakingDelegate);
-        payloads[7] =
-            abi.encodeCall(YearnStakingDelegate.setGaugeRewardSplit, (MAINNET_COVEYFI_YFI_GAUGE, 5e17, 0, 90e17, 5e17));
+        payloads[7] = abi.encodeCall(
+            YearnStakingDelegate.setGaugeRewardSplit, (MAINNET_COVEYFI_YFI_GAUGE, 0.05e18, 0, 0.9e18, 0.05e18)
+        );
 
         // Queue up the timelock transaction
         addToBatch(
