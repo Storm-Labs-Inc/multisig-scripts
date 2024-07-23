@@ -17,7 +17,7 @@ contract Script is OpsMultisigScript {
         address coveYfiRewardsGauge = deployer.getAddress("CoveYfiRewardsGauge");
         address coveYfiRewardsGaugeRewardForwarder = deployer.getAddress("CoveYFIRewardsGaugeRewardForwarder");
         CoveYearnGaugeFactory factory = CoveYearnGaugeFactory(deployer.getAddress("CoveYearnGaugeFactory"));
-        CoveYearnGaugeFactory.GaugeInfo[] memory info = factory.getAllGaugeInfo(8, 0);
+        CoveYearnGaugeFactory.GaugeInfo[] memory info = factory.getAllGaugeInfo(9, 0);
         // Skip ahead to to end of current reward period
         // vm.warp((ERC20RewardsGauge(coveYfiRewardsGauge).getRewardData(coveToken)).periodFinish + 1);
 
@@ -80,6 +80,6 @@ contract Script is OpsMultisigScript {
             );
         }
         // Execute batch
-        if (shouldSend) executeBatch(true);
+        if (shouldSend) executeBatch(true, 24);
     }
 }
