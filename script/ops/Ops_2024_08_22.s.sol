@@ -17,7 +17,8 @@ contract Script is OpsMultisigScript {
         address coveYfiRewardsGauge = deployer.getAddress("CoveYfiRewardsGauge");
         address coveYfiRewardsGaugeRewardForwarder = deployer.getAddress("CoveYFIRewardsGaugeRewardForwarder");
         CoveYearnGaugeFactory factory = CoveYearnGaugeFactory(deployer.getAddress("CoveYearnGaugeFactory"));
-        CoveYearnGaugeFactory.GaugeInfo[] memory info = factory.getAllGaugeInfo(9, 0);
+        CoveYearnGaugeFactory.GaugeInfo[] memory info = factory.getAllGaugeInfo(100, 0);
+        uint256 totalRewardsToDistribute = 3_500_000 ether;
         // Skip ahead to to end of current reward period
         // vm.warp((ERC20RewardsGauge(coveYfiRewardsGauge).getRewardData(coveToken)).periodFinish + 1);
 
@@ -65,6 +66,7 @@ contract Script is OpsMultisigScript {
             "coveYfiRewardsGauge forwardRewardToken failed"
         );
 
+        uint256 totalRewardsDistributed = 0;
         for (uint256 j = 0; j < info.length; j++) {
             uint256 rewardAmount = rewardAmounts[j];
             address autoCompoundingGaugeRewardForwarder =
@@ -77,14 +79,14 @@ contract Script is OpsMultisigScript {
             addToBatch(
                 autoCompoundingGaugeRewardForwarder, 0, abi.encodeCall(RewardForwarder.forwardRewardToken, (coveToken))
             );
-            require(
-                IERC20(coveToken).balanceOf(info[j].autoCompoundingGauge) == balanceBefore + rewardAmount / 4,
-                "forwardRewardToken failed for gauge"
-            );
+            uint256 balanceAfter = IERC20(coveToken).balanceOf(info[j].autoCompoundingGauge);
+            require(balanceAfter == balanceBefore + rewardAmount / 4, "forwardRewardToken failed for gauge");
+            totalRewardsDistributed += rewardAmount;
             console.log(
                 "New rate: ", ERC20RewardsGauge(info[j].autoCompoundingGauge).getRewardData(address(coveToken)).rate
             );
         }
+        require(totalRewardsDistributed == totalRewardsToDistribute, "incorrect total rewards distributed");
         // Execute batch
         if (shouldSend) executeBatch(true);
     }
