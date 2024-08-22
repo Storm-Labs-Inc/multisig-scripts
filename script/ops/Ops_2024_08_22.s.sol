@@ -52,21 +52,21 @@ contract Script is OpsMultisigScript {
         rewardAmounts[9] = 200_000 ether;
         rewardAmounts[10] = 200_000 ether;
         rewardAmounts[11] = 200_000 ether;
+        uint256 coveYFIRewardAmount = 850_000 ether;
+        uint256 totalRewardsDistributed = coveYFIRewardAmount;
         uint256 balanceBefore = IERC20(coveToken).balanceOf(coveYfiRewardsGauge);
         addToBatch(
             coveToken,
             0,
-            abi.encodeCall(IERC20.transfer, (coveYfiRewardsGaugeRewardForwarder, uint256(850_000 ether) / 4))
+            abi.encodeCall(IERC20.transfer, (coveYfiRewardsGaugeRewardForwarder, uint256(coveYFIRewardAmount) / 4))
         );
         addToBatch(
             coveYfiRewardsGaugeRewardForwarder, 0, abi.encodeCall(RewardForwarder.forwardRewardToken, (coveToken))
         );
         require(
-            IERC20(coveToken).balanceOf(coveYfiRewardsGauge) == balanceBefore + uint256(850_000 ether) / 4,
+            IERC20(coveToken).balanceOf(coveYfiRewardsGauge) == balanceBefore + uint256(coveYFIRewardAmount) / 4,
             "coveYfiRewardsGauge forwardRewardToken failed"
         );
-
-        uint256 totalRewardsDistributed = 0;
         for (uint256 j = 0; j < info.length; j++) {
             uint256 rewardAmount = rewardAmounts[j];
             address autoCompoundingGaugeRewardForwarder =
