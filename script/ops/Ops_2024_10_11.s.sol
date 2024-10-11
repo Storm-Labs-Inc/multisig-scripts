@@ -22,7 +22,7 @@ contract Script is OpsMultisigScript {
         // Skip ahead to to end of current reward period
         // vm.warp((ERC20RewardsGauge(coveYfiRewardsGauge).getRewardData(coveToken)).periodFinish + 1);
 
-        // queueing up the rewards for epoch 4, week 1
+        // queueing up the rewards for epoch 5, week 1
         // https://docs.cove.finance/ecosystem/token/liquidity-mining#epoch-5
         // The following indexes correspond to the gauges entry in the factory.getAllGaugeInfo call
         // 0: Curve yEth (v2) 50,000 / 4 $COVE
