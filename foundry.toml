@@ -18,7 +18,7 @@ remappings = [
 
 fs_permissions = [
     { access = "read", path = "./lib" },
-    { access = "read", path = "./out" }
+    { access = "read", path = "./out" },
 ]
 
 [fmt]
