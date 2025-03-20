@@ -71,20 +71,20 @@ contract Script is OpsMultisigScript {
             uint256 rewardAmount = rewardAmounts[j];
             address autoCompoundingGaugeRewardForwarder =
                 ERC20RewardsGauge(info[j].autoCompoundingGauge).getRewardData(address(coveToken)).distributor;
-            console.log("Queueing up rewards for gauge", info[j].autoCompoundingGauge);
-            uint256 balanceBefore = IERC20(coveToken).balanceOf(info[j].autoCompoundingGauge);
+            // console.log("Queueing up rewards for gauge", info[j].autoCompoundingGauge);
+            // uint256 balanceBefore = IERC20(coveToken).balanceOf(info[j].autoCompoundingGauge);
             addToBatch(
                 coveToken, 0, abi.encodeCall(IERC20.transfer, (autoCompoundingGaugeRewardForwarder, rewardAmount / 4))
             );
             addToBatch(
                 autoCompoundingGaugeRewardForwarder, 0, abi.encodeCall(RewardForwarder.forwardRewardToken, (coveToken))
             );
-            uint256 balanceAfter = IERC20(coveToken).balanceOf(info[j].autoCompoundingGauge);
-            require(balanceAfter == balanceBefore + rewardAmount / 4, "forwardRewardToken failed for gauge");
-            totalRewardsDistributed += rewardAmount;
-            console.log(
-                "New rate: ", ERC20RewardsGauge(info[j].autoCompoundingGauge).getRewardData(address(coveToken)).rate
-            );
+            // uint256 balanceAfter = IERC20(coveToken).balanceOf(info[j].autoCompoundingGauge);
+            // require(balanceAfter == balanceBefore + rewardAmount / 4, "forwardRewardToken failed for gauge");
+            // totalRewardsDistributed += rewardAmount;
+            // console.log(
+            //     "New rate: ", ERC20RewardsGauge(info[j].autoCompoundingGauge).getRewardData(address(coveToken)).rate
+            // );
         }
         require(totalRewardsDistributed == totalRewardsToDistribute, "incorrect total rewards distributed");
         // Execute batch
