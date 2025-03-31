@@ -14,6 +14,7 @@ remappings = [
     '@openzeppelin/=lib/cove-contracts-boosties/lib/openzeppelin-contracts/',
     'script/=script',
     'tokenized-strategy/=lib/cove-contracts-boosties/lib/tokenized-strategy/src',
+    'permit2/=lib/cove-contracts-boosties/lib/permit2/src',
 ]
 
 fs_permissions = [
