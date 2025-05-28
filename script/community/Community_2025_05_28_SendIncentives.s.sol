@@ -33,19 +33,19 @@ contract Script is CommunityMultisigScript, StdAssertions, StdCheats {
         super.run(shouldSend);
 
         IFarmingPlugin farmingPlugin = IFarmingPlugin(coveUSDFarmingPlugin);
+        uint256 totalRewardAmount = REWARD_AMOUNT_PER_WEEK * TOTAL_DURATION / 7 days;
 
         // ================================ START BATCH ===================================
 
         addToBatch(
             address(farmingPlugin), 0, abi.encodeCall(IFarmingPlugin.setDistributor, (MAINNET_COVE_OPS_MULTISIG))
         );
+        addToBatch(
+            address(coveToken), 0, abi.encodeCall(IERC20.transfer, (MAINNET_COVE_OPS_MULTISIG, totalRewardAmount))
+        );
 
         // ============================= TESTING ===================================
         (uint40 finished, uint32 duration, uint184 reward, uint256 balance) = farmingPlugin.farmInfo();
-
-        uint256 totalRewardAmount = REWARD_AMOUNT_PER_WEEK * TOTAL_DURATION / 7 days;
-        address coveToken = coveToken;
-        deal(coveToken, address(MAINNET_COVE_OPS_MULTISIG), totalRewardAmount);
 
         vm.prank(MAINNET_COVE_OPS_MULTISIG);
         IERC20(coveToken).approve(address(farmingPlugin), totalRewardAmount);
@@ -58,8 +58,8 @@ contract Script is CommunityMultisigScript, StdAssertions, StdCheats {
         require(perWeek == REWARD_AMOUNT_PER_WEEK, "perWeek is not equal to REWARD_AMOUNT_PER_WEEK");
 
         // ============================= QUEUE UP MSIG ================================
-        // if (shouldSend) {
-        //     executeBatch(true);
-        // }
+        if (shouldSend) {
+            executeBatch(true, 22);
+        }
     }
 }
