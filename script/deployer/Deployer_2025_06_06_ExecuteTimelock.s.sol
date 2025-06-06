@@ -4,13 +4,6 @@ pragma solidity ^0.8.18;
 import { CoveToken } from "cove-contracts-boosties/src/governance/CoveToken.sol";
 import { DeployerScript } from "./DeployerScript.s.sol";
 import { TimelockController } from "@openzeppelin/contracts/governance/TimelockController.sol";
-import { YearnStakingDelegate } from "cove-contracts-boosties/src/YearnStakingDelegate.sol";
-import { CoveYearnGaugeFactory } from "cove-contracts-boosties/src/registries/CoveYearnGaugeFactory.sol";
-import { ERC20RewardsGauge } from "cove-contracts-boosties/src/rewards/ERC20RewardsGauge.sol";
-import { AccessControl } from "@openzeppelin/contracts/access/AccessControl.sol";
-import { Yearn4626RouterExt } from "cove-contracts-boosties/src/Yearn4626RouterExt.sol";
-import { PeripheryPayments } from
-    "lib/cove-contracts-boosties/lib/Yearn-ERC4626-Router/src/external/PeripheryPayments.sol";
 
 contract Script is DeployerScript {
     address public coveUSDFarmingPlugin = 0xa74e0B738b053D9083451bBAB84c538ff2Cc701d;
@@ -20,6 +13,7 @@ contract Script is DeployerScript {
         vm.startBroadcast(MAINNET_COVE_DEPLOYER);
 
         address coveToken = deployer.getAddress("CoveToken");
+        address timelock = deployer.getAddress("TimelockController");
 
         // ================================ START BATCH ===================================
 
