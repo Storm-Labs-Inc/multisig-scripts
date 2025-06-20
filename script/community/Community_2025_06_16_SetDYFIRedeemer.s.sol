@@ -34,11 +34,7 @@ contract Script is CommunityMultisigScript, StdAssertions {
         addToBatch(
             masterRegistry,
             0,
-            abi.encodeCall(IMasterRegistry.addRegistry, (keccak256("DYFIRedeemerv2"), dyfiRedeemerV2))
-        );
-        // Set old address to 0
-        addToBatch(
-            masterRegistry, 0, abi.encodeCall(IMasterRegistry.addRegistry, (keccak256("DYFIRedeemer"), address(0)))
+            abi.encodeCall(IMasterRegistry.addRegistry, (keccak256("DYFIRedeemer"), dyfiRedeemerV2))
         );
         // ============================= QUEUE UP MSIG ================================
         if (shouldSend) {
