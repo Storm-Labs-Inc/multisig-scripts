@@ -27,7 +27,7 @@ contract Script is CommunityMultisigScript, StdAssertions {
         address coveToken = deployer.getAddress("CoveToken");
 
         // ================================ START BATCH ===================================
-        address target = MERKL_DISTRIBUTOR;
+        address target = coveToken;
         uint256 value = 0;
         bytes memory payload = abi.encodeCall(CoveToken.addAllowedSender, (MERKL_DISTRIBUTOR));
 
