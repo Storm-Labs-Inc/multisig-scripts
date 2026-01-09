@@ -3,6 +3,7 @@ pragma solidity ^0.8.18;
 
 import { CommunityMultisigScript } from "./CommunityMultisigScript.s.sol";
 import { StdAssertions } from "forge-std/StdAssertions.sol";
+import { VmSafe } from "forge-std/Vm.sol";
 import { TimelockController } from
     "lib/cove-contracts-boosties/lib/openzeppelin-contracts/contracts/governance/TimelockController.sol";
 
@@ -81,8 +82,13 @@ contract Script is CommunityMultisigScript, StdAssertions {
             "sponsor split not updated"
         );
 
-        if (shouldSend) {
+        // if context is ScriptBroadcast (forge script ... --broadcast),
+        // actually execute the batch
+        // otherwise, just simulate the batch
+        if (vm.isContext(VmSafe.ForgeContext.ScriptBroadcast)) {
             executeBatch(true);
+        } else {
+            executeBatch(false);
         }
     }
 }
