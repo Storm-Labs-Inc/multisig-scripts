@@ -197,3 +197,4 @@ lcov.info
 **/cache
 **/node_modules
 **/out
+.worktrees/

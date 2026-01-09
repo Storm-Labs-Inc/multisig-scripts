@@ -2,7 +2,7 @@
 src = "src"
 out = "out"
 script = "script"
-libs = ["lib"]
+libs = ["lib", "dependencies"]
 solc = '0.8.18'
 ffi = true
 auto_detect_solc = false
@@ -31,5 +31,7 @@ number_underscore = "thousands"
 quote_style = "double"
 tab_width = 4
 wrap_comments = true
+
+[dependencies]
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
